@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/evento.dart';
 import 'views/event_details_view.dart';
+import 'views/event_form_view.dart'; // <- asegúrate de tener este import
 
 void main() {
   runApp(const MainApp());
@@ -33,7 +34,8 @@ La presencia de Mägo de Oz en Rock al Parque representó no solo un hito musica
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: EventDetailsView(evento: mockEvento),
+      //home: EventDetailsView(evento: mockEvento),
+      home: EventFormView(),
     );
   }
 }
