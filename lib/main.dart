@@ -35,6 +35,7 @@ La presencia de Mägo de Oz en Rock al Parque representó no solo un hito musica
 
     return MaterialApp(
   home: EventListView(),
+  
   onGenerateRoute: (settings) {
     if (settings.name == '/event_details_view') {
       final evento = settings.arguments as Evento;
