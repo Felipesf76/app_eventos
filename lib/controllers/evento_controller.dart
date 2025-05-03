@@ -12,17 +12,7 @@ class EventoController {
       throw Exception(('Fallo al cargar los eventos'));
     }
   }
-
-  Future<Evento> crearEvento(
-    String nombre,
-    String descripcion,
-
-  ) async {
-    Map<String, dynamic> request = {
-
-    };
-  };
-
+  
   void editarEvento() {
     print('Editando Evento');
   }

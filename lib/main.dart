@@ -34,8 +34,8 @@ La presencia de Mägo de Oz en Rock al Parque representó no solo un hito musica
     );
 
     return MaterialApp(
-      //home: EventDetailsView(evento: mockEvento),
-      home: EventListView(),
+      home: EventDetailsView(evento: mockEvento),
+      //home: EventListView(),
       debugShowCheckedModeBanner: false,
     );
   }
