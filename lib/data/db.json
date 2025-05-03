@@ -1,0 +1,74 @@
+{
+  "eventos": [
+    {
+      "nombre": "Rock al Parque",
+      "descripcion": "Rock al Parque es uno de los festivales de música más importantes de América Latina y uno de los eventos gratuitos al aire libre más grandes del mundo. Se celebra cada año en Bogotá, Colombia, y reúne a miles de asistentes durante varios días en diferentes escenarios de la ciudad. Desde su creación en 1995, el festival ha servido como plataforma para artistas emergentes y consolidados, promoviendo géneros como el rock, metal, punk, reggae, ska y muchas otras variantes alternativas. Con una fuerte apuesta por la diversidad musical y la inclusión cultural, Rock al Parque se ha convertido en un emblema del movimiento artístico y juvenil en el país.",
+      "fechaInicio": "2024-08-01T00:00:00.000Z",
+      "fechaFin": "2024-08-03T00:00:00.000Z",
+      "categoria": "Música",
+      "lugar": "Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/rock_al_parque.png"
+    },
+    {
+      "nombre": "Salsa al Parque",
+      "descripcion": "Salsa al Parque es un festival anual que celebra la rica tradición de la salsa en Bogotá. Ofrece conciertos gratuitos con artistas locales e internacionales, clases de baile y actividades culturales relacionadas con este género musical vibrante y apasionado.",
+      "fechaInicio": "2024-06-15T00:00:00.000Z",
+      "fechaFin": "2024-06-16T00:00:00.000Z",
+      "categoria": "Música",
+      "lugar": "Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/salsa_al_parque.png"
+    },
+    {
+      "nombre": "Jazz al Parque",
+      "descripcion": "Jazz al Parque es un festival que presenta una variedad de estilos de jazz, desde el tradicional hasta el contemporáneo. Con conciertos gratuitos en diferentes parques de la ciudad, busca acercar este género musical a un público amplio y diverso.",
+      "fechaInicio": "2024-09-07T00:00:00.000Z",
+      "fechaFin": "2024-09-08T00:00:00.000Z",
+      "categoria": "Música",
+      "lugar": "Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/jazz_al_parque.png"
+    },
+    {
+      "nombre": "La FILBo (Feria Internacional del Libro de Bogotá)",
+      "descripcion": "La Feria Internacional del Libro de Bogotá es uno de los eventos culturales más importantes de Colombia y América Latina. Reúne a editoriales, autores, libreros y lectores en un espacio dedicado a la literatura, la cultura y el conocimiento. Ofrece una amplia programación que incluye presentaciones de libros, charlas, talleres y actividades para todas las edades.",
+      "fechaInicio": "2025-04-23T00:00:00.000Z",
+      "fechaFin": "2025-05-05T00:00:00.000Z",
+      "categoria": "Feria",
+      "lugar": "Corferias, Bogotá (Colombia)",
+      "estado": "en curso",
+      "imagenPath": "assets/filbo.png"
+    },
+    {
+      "nombre": "SOFA (Salón del Ocio y la Fantasía)",
+      "descripcion": "El Salón del Ocio y la Fantasía es un evento masivo que celebra la cultura geek, los videojuegos, el cómic, el anime, el cosplay y otras aficiones relacionadas con el entretenimiento y la imaginación. Ofrece concursos, exhibiciones, talleres, invitados especiales y muchas actividades para los amantes de estos mundos.",
+      "fechaInicio": "2024-10-12T00:00:00.000Z",
+      "fechaFin": "2024-10-16T00:00:00.000Z",
+      "categoria": "Convención",
+      "lugar": "Corferias, Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/sofa.png"
+    },
+    {
+      "nombre": "Festival de Verano de Bogotá",
+      "descripcion": "El Festival de Verano de Bogotá ofrece una amplia gama de actividades recreativas, deportivas y culturales gratuitas para disfrutar durante la temporada de verano en la ciudad. Incluye conciertos, eventos deportivos, actividades al aire libre, muestras artísticas y mucho más.",
+      "fechaInicio": "2024-07-27T00:00:00.000Z",
+      "fechaFin": "2024-08-11T00:00:00.000Z",
+      "categoria": "Festival",
+      "lugar": "Varios puntos de Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/festival_verano.png"
+    },
+    {
+      "nombre": "Bogotá Audiovisual Market - BAM",
+      "descripcion": "El Bogotá Audiovisual Market es un evento clave para la industria audiovisual colombiana e internacional. Facilita el encuentro entre productores, distribuidores, compradores y otros profesionales del sector, promoviendo la coproducción, la financiación y la circulación de contenidos audiovisuales.",
+      "fechaInicio": "2024-07-08T00:00:00.000Z",
+      "fechaFin": "2024-07-12T00:00:00.000Z",
+      "categoria": "Mercado",
+      "lugar": "Bogotá (Colombia)",
+      "estado": "finalizado",
+      "imagenPath": "assets/bam.png"
+    }
+  ]
+}

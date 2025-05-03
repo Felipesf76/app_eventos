@@ -21,8 +21,9 @@ class EventoCard extends StatelessWidget {
           child: Image.asset(
             evento.imagenPath,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                const Center(child: Icon(Icons.image, size: 50)),
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    const Center(child: Icon(Icons.image, size: 50)),
           ),
         ),
         const SizedBox(height: 12),
@@ -31,20 +32,20 @@ class EventoCard extends StatelessWidget {
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        Text(
-          evento.descripcion,
-          style: const TextStyle(fontSize: 16),
-        ),
+        Text(evento.descripcion, style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 12),
-        _info("📅 Fecha de inicio", evento.fechaInicio.toLocal().toString().split(' ')[0]),
-        _info("📅 Fecha de fin", evento.fechaFin.toLocal().toString().split(' ')[0]),
+        _info(
+          "📅 Fecha de inicio",
+          evento.fechaInicio.toLocal().toString().split(' ')[0],
+        ),
+        _info(
+          "📅 Fecha de fin",
+          evento.fechaFin.toLocal().toString().split(' ')[0],
+        ),
         _info("📍 Lugar", evento.lugar),
         _info("🏷️ Categoría", evento.categoria),
         const SizedBox(height: 20),
-        if (finalizado)
-          _estadoFinalizado()
-        else
-          const SizedBox(),
+        if (finalizado) _estadoFinalizado() else const SizedBox(),
       ],
     );
   }
@@ -55,7 +56,10 @@ class EventoCard extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: "$label: ",
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
           children: [
             TextSpan(
               text: value,
