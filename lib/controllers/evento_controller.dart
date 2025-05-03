@@ -13,7 +13,7 @@ class EventoController {
     }
   }
 
-  Future<Evento> crearEvento(
+ /* Future<Evento> crearEvento(
     String nombre,
     String descripcion,
 
@@ -21,7 +21,7 @@ class EventoController {
     Map<String, dynamic> request = {
 
     };
-  };
+  }*/
 
   void editarEvento() {
     print('Editando Evento');

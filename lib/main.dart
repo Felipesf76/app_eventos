@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Evento mockEvento = Evento(
+    /*final Evento mockEvento = Evento(
       nombre: 'Rock al parque',
       descripcion: '''
 Rock al Parque es uno de los festivales de música más importantes de América Latina y uno de los eventos gratuitos al aire libre más grandes del mundo. Se celebra cada año en Bogotá, Colombia, y reúne a miles de asistentes durante varios días en diferentes escenarios de la ciudad. Desde su creación en 1995, el festival ha servido como plataforma para artistas emergentes y consolidados, promoviendo géneros como el rock, metal, punk, reggae, ska y muchas otras variantes alternativas. Con una fuerte apuesta por la diversidad musical y la inclusión cultural, Rock al Parque se ha convertido en un emblema del movimiento artístico y juvenil en el país.
@@ -31,12 +31,33 @@ La presencia de Mägo de Oz en Rock al Parque representó no solo un hito musica
       lugar: 'Bogotá (Colombia)',
       estado: 'finalizado',
       imagenPath: 'assets/image.png',
-    );
+    );*/
 
     return MaterialApp(
-      //home: EventDetailsView(evento: mockEvento),
-      home: EventListView(),
-      debugShowCheckedModeBanner: false,
+  home: EventListView(),
+  onGenerateRoute: (settings) {
+    if (settings.name == '/event_details_view') {
+      final evento = settings.arguments as Evento;
+      return MaterialPageRoute(
+        builder: (context) => EventDetailsView(evento: evento),
+      );
+    }
+
+    if (settings.name == '/event_form_view') {
+      return MaterialPageRoute(
+        builder: (context) => const EventFormView(),
+      );
+    }
+
+    // Ruta por defecto (si no coincide con ninguna)
+    return MaterialPageRoute(
+      builder: (context) => const Scaffold(
+        body: Center(child: Text('Ruta no encontrada')),
+      ),
     );
-  }
+  },
+  debugShowCheckedModeBanner: false,
+);
+
+    }
 }
