@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import '../controllers/evento_controller.dart';
 
 class EventFormView extends StatefulWidget {
   const EventFormView({super.key});
@@ -27,51 +28,50 @@ class _EventFormState extends State<EventFormView> {
   File? _imagenSeleccionada;
 
   final List<String> _categorias = ['Rock', 'Heavy Metal', 'Punk', 'Stoner'];
-  final List<String> _estados = ['Pendiente', 'En curso', 'Finalizado'];
+  final List<String> _estados = ['pendiente', 'en curso', 'finalizado'];
 
-Future<void> _seleccionarFecha({
-  required bool esFechaInicio,
-}) async {
-  final DateTime? fechaSeleccionada = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(2020),
-    lastDate: DateTime(2100),
-  );
+ Future<void> _seleccionarFecha({required bool esFechaInicio}) async {
+    final DateTime? fechaSeleccionada = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
 
-  if (fechaSeleccionada != null) {
-    setState(() {
-      if (esFechaInicio) {
-        _fechaInicio = fechaSeleccionada;
-        if (_fechaFin != null && _fechaFin!.isBefore(_fechaInicio!)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
-          );
-          _fechaFin = null;
-        }
-      } else {
-        if (_fechaInicio != null && fechaSeleccionada.isBefore(_fechaInicio!)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
-          );
+    if (fechaSeleccionada != null) {
+      setState(() {
+        if (esFechaInicio) {
+          _fechaInicio = fechaSeleccionada;
+          if (_fechaFin != null && _fechaFin!.isBefore(_fechaInicio!)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
+            );
+            _fechaFin = null;
+          }
         } else {
-          _fechaFin = fechaSeleccionada;
+          if (_fechaInicio != null && fechaSeleccionada.isBefore(_fechaInicio!)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
+            );
+          } else {
+            _fechaFin = fechaSeleccionada;
+          }
         }
-      }
-    });
+      });
+    }
   }
-}
 
-Future<void> _elegirImagen() async {
-final picker = ImagePicker();
-  final XFile? imagen = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> _elegirImagen() async {
+    final picker = ImagePicker();
+    final XFile? imagen = await picker.pickImage(source: ImageSource.gallery);
 
-  if (imagen != null) {
-    setState(() {
-      _imagenController.text = imagen.name; // con imagen.path se guarda la ruta completa
-    });
+    if (imagen != null) {
+      setState(() {
+        _imagenController.text = imagen.name;
+        _imagenSeleccionada = File(imagen.path);
+      });
+    }
   }
-}
 
   @override
   void dispose() {
@@ -146,7 +146,6 @@ final picker = ImagePicker();
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
@@ -208,14 +207,44 @@ final picker = ImagePicker();
                 ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Guardar en la bdd
-                    print('Formulario válido');
+                    if (_fechaInicio == null || _fechaFin == null || _categoriaSeleccionada == null || _estadoSeleccionado == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Por favor completa todos los campos')),
+                      );
+                      return;
+                    }
+
+                    final imagenPath = _imagenController.text.isNotEmpty
+                        ? 'assets/${_imagenController.text}'
+                        : 'assets/default.png';
+
+                    try {
+                      final nuevoEvento = await EventoController().crearEvento(
+                        _nombreController.text,
+                        _descripcionController.text,
+                        _fechaInicio!,
+                        _fechaFin!,
+                        _categoriaSeleccionada!,
+                        _lugarController.text,
+                        _estadoSeleccionado!.toLowerCase(),
+                        imagenPath,
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Evento creado exitosamente')),
+                      );
+                      Navigator.pop(context);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error al crear el evento: $e')),
+                      );
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 226, 226, 226),
+                  backgroundColor: const Color.fromARGB(255, 226, 226, 226),
                 ),
                child: const Text(
                 'Guardar Evento',

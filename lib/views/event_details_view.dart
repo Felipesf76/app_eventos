@@ -28,14 +28,18 @@ class EventDetailsView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: EventoCard(evento: evento),
       ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: evento.estado.toLowerCase() == 'finalizado'
+      ? null
+      : Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.redAccent,
             padding: const EdgeInsets.symmetric(vertical: 16),
           ),
-          onPressed: controller.finalizarEvento,
+          onPressed: () async {
+            await controller.estadoFinalizado(evento.id);
+          },
           child: const Text(
             'FINALIZAR EVENTO',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

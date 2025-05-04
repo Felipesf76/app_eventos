@@ -1,3 +1,4 @@
+import 'package:app_eventos/controllers/evento_controller.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -12,20 +13,15 @@ class EventListView extends StatefulWidget {
 }
 
 class _EventListViewState extends State<EventListView> {
-  // Función para obtener los eventos desde el servidor
-  Future<List<Evento>> obtenerEventos() async {
-    final url = Uri.parse('http://localhost:3000/eventos');
-    final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final utf8Body = utf8.decode(response.bodyBytes);
-      final List<dynamic> decodedData = json.decode(utf8Body);
-      //final List<dynamic> decodedData = json.decode(response.body);
-      print(json.decode(utf8Body));
-      return decodedData.map((json) => Evento.fromJSON(json)).toList();
-    } else {
-      throw Exception('Fallo al cargar los eventos');
-    }
+  final EventoController controller = EventoController();
+
+  late Future<List<Evento>> futureEventos;
+
+  @override
+  void initState() {
+    super.initState();
+    futureEventos = controller.obtenerEventos(); // Llama al método del controlador
   }
 
   @override
@@ -41,7 +37,7 @@ class _EventListViewState extends State<EventListView> {
         elevation: 1,
       ),
       body: FutureBuilder<List<Evento>>(
-        future: obtenerEventos(),
+        future: futureEventos,
         builder: (context, snapshot) {
           // Verificando los diferentes estados de la conexión
           if (snapshot.connectionState == ConnectionState.waiting) {

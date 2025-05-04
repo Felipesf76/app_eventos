@@ -1,4 +1,5 @@
 class Evento {
+  final String id;
   final String nombre;
   final String descripcion;
   final DateTime fechaInicio;
@@ -9,6 +10,7 @@ class Evento {
   final String imagenPath;
 
   Evento({
+    required this.id,
     required this.nombre,
     required this.descripcion,
     required this.fechaInicio,
@@ -20,6 +22,7 @@ class Evento {
   });
 
 factory Evento.fromJSON(Map<String, dynamic> json) => Evento(
+    id: json['id'] ?? '', 
     nombre: json['nombre'] ?? '',
     descripcion: json['descripcion'] ?? '',
     fechaInicio: DateTime.parse(json['fechaInicio']),

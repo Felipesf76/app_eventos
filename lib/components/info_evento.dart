@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../views/event_details_view.dart';
 
 class ListEvento extends StatelessWidget {
   final String title;
@@ -10,16 +9,6 @@ class ListEvento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // onTap: () {
-      //   Navigation.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => EventDetailsView(
-      //         evento: ListEvento,
-      //       )
-      //     )
-      //   )
-      // }
       width: 200.0,
       height: 200.0,
       margin: const EdgeInsets.all(20.0),

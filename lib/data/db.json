@@ -8,7 +8,8 @@
       "categoria": "Música",
       "lugar": "Bogotá (Colombia)",
       "estado": "finalizado",
-      "imagenPath": "assets/rock_al_parque.png"
+      "imagenPath": "assets/rock_al_parque.png",
+      "id": "f961"
     },
     {
       "nombre": "Salsa al Parque",
@@ -17,8 +18,9 @@
       "fechaFin": "2024-06-16T00:00:00.000Z",
       "categoria": "Música",
       "lugar": "Bogotá (Colombia)",
-      "estado": "finalizado",
-      "imagenPath": "assets/salsa_al_parque.png"
+      "estado": "en curso",
+      "imagenPath": "assets/salsa_al_parque.png",
+      "id": "e2d4"
     },
     {
       "nombre": "Jazz al Parque",
@@ -27,8 +29,9 @@
       "fechaFin": "2024-09-08T00:00:00.000Z",
       "categoria": "Música",
       "lugar": "Bogotá (Colombia)",
-      "estado": "finalizado",
-      "imagenPath": "assets/jazz_al_parque.png"
+      "estado": "en curso",
+      "imagenPath": "assets/jazz_al_parque.png",
+      "id": "48d7"
     },
     {
       "nombre": "La FILBo (Feria Internacional del Libro de Bogotá)",
@@ -38,7 +41,8 @@
       "categoria": "Feria",
       "lugar": "Corferias, Bogotá (Colombia)",
       "estado": "en curso",
-      "imagenPath": "assets/filbo.png"
+      "imagenPath": "assets/filbo.png",
+      "id": "3389"
     },
     {
       "nombre": "SOFA (Salón del Ocio y la Fantasía)",
@@ -48,7 +52,8 @@
       "categoria": "Convención",
       "lugar": "Corferias, Bogotá (Colombia)",
       "estado": "finalizado",
-      "imagenPath": "assets/sofa.png"
+      "imagenPath": "assets/sofa.png",
+      "id": "b248"
     },
     {
       "nombre": "Festival de Verano de Bogotá",
@@ -58,7 +63,8 @@
       "categoria": "Festival",
       "lugar": "Varios puntos de Bogotá (Colombia)",
       "estado": "finalizado",
-      "imagenPath": "assets/festival_verano.png"
+      "imagenPath": "assets/festival_verano.png",
+      "id": "2205"
     },
     {
       "nombre": "Bogotá Audiovisual Market - BAM",
@@ -68,7 +74,8 @@
       "categoria": "Mercado",
       "lugar": "Bogotá (Colombia)",
       "estado": "finalizado",
-      "imagenPath": "assets/bam.png"
+      "imagenPath": "assets/bam.png",
+      "id": "0d79"
     }
   ]
 }
