@@ -3,16 +3,38 @@ import '../models/evento.dart';
 import 'package:http/http.dart' as http;
 
 class EventoController {
-  Future<List<Evento>> obtenerEventos() async {
+  /*Future<List<Evento>> obtenerEventos() async {
     final url = Uri.parse('http://localhost:3000/eventos');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      final List<dynamic> decodedData = json.decode(response.body);
+      final decodedResponse = utf8.decode(response.bodyBytes); // Asegura UTF-8
+      final List<dynamic> decodedData = json.decode(decodedResponse);
       return decodedData.map((json) => Evento.fromJSON(json)).toList();
     } else {
       throw Exception(('Fallo al cargar los eventos'));
     }
+  }*/
+
+  Future<List<Evento>> obtenerEventos() async {
+  final url = Uri.parse('http://localhost:3000/eventos');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    // Imprimir los bytes de la respuesta
+    print('Response Bytes: ${response.bodyBytes}');
+
+    // Decodificar en UTF-8
+    final decodedResponse = utf8.decode(response.bodyBytes);
+
+    // Imprimir la respuesta decodificada para verificar los caracteres
+    print('Decoded Response: $decodedResponse');
+
+    final List<dynamic> decodedData = json.decode(decodedResponse);
+    return decodedData.map((json) => Evento.fromJSON(json)).toList();
+  } else {
+    throw Exception('Fallo al cargar los eventos');
   }
+}
 
   Future<Evento> obtenerEvento(String id) async {
     final url = Uri.parse('http://localhost:3000/eventos/$id');
