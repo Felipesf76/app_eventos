@@ -13,7 +13,6 @@ class EventListView extends StatefulWidget {
 }
 
 class _EventListViewState extends State<EventListView> {
-
   final EventoController controller = EventoController();
 
   late Future<List<Evento>> futureEventos;
@@ -21,7 +20,8 @@ class _EventListViewState extends State<EventListView> {
   @override
   void initState() {
     super.initState();
-    futureEventos = controller.obtenerEventos(); // Llama al método del controlador
+    futureEventos =
+        controller.obtenerEventos(); // Llama al método del controlador
   }
 
   @override
@@ -57,9 +57,12 @@ class _EventListViewState extends State<EventListView> {
               crossAxisCount: 2, // 2 columnas por línea
               crossAxisSpacing: 20.0, // Espacio horizontal entre las tarjetas
               mainAxisSpacing: 20.0, // Espacio vertical entre las tarjetas
-              childAspectRatio: 1, // Relación de aspecto cuadrada para las tarjetas
+              childAspectRatio:
+                  1, // Relación de aspecto cuadrada para las tarjetas
             ),
-            itemCount: eventos.length + 1, // 1 espacio adicional para la tarjeta de agregar
+            itemCount:
+                eventos.length +
+                1, // 1 espacio adicional para la tarjeta de agregar
             itemBuilder: (context, index) {
               if (index == 0) {
                 // Tarjeta para agregar un nuevo evento
@@ -88,7 +91,10 @@ class _EventListViewState extends State<EventListView> {
                         children: [
                           Icon(Icons.add, size: 40),
                           SizedBox(height: 8),
-                          Text('Agregar un\nnuevo evento', textAlign: TextAlign.center),
+                          Text(
+                            'Agregar un\nnuevo evento',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ),
@@ -136,7 +142,10 @@ class _EventListViewState extends State<EventListView> {
                       // Título del evento
                       Text(
                         evento.nombre,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),

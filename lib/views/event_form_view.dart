@@ -3,34 +3,75 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../controllers/evento_controller.dart';
+import '../models/evento.dart';
 
 class EventFormView extends StatefulWidget {
-  const EventFormView({super.key});
+  final Evento? evento;
+  const EventFormView({super.key, this.evento});
 
   @override
   State<EventFormView> createState() => _EventFormState();
 }
 
 class _EventFormState extends State<EventFormView> {
+  Evento? _evento;
   final _formKey = GlobalKey<FormState>();
 
-  final _nombreController = TextEditingController();
-  final _descripcionController = TextEditingController();
-  final _lugarController = TextEditingController();
-  final _imagenController = TextEditingController();
+  late final TextEditingController _nombreController;
+  late final TextEditingController _descripcionController;
+  late final TextEditingController _lugarController;
+  late final TextEditingController _imagenController;
 
   DateTime? _fechaInicio;
   DateTime? _fechaFin;
 
   String? _categoriaSeleccionada;
   String? _estadoSeleccionado;
+  String? _eventId;
 
   File? _imagenSeleccionada;
 
-  final List<String> _categorias = ['Rock', 'Heavy Metal', 'Punk', 'Stoner'];
-  final List<String> _estados = ['pendiente', 'en curso', 'finalizado'];
+  final List<String> _categorias = [
+    'Festival',
+    'Obra de teatro',
+    'Concierto',
+    'Otros',
+  ];
+  final List<String> _estados = ['Pendiente', 'En curso', 'Finalizado'];
 
- Future<void> _seleccionarFecha({required bool esFechaInicio}) async {
+  @override
+  void initState() {
+    super.initState();
+    _eventId = widget.evento?.id;
+    _nombreController = TextEditingController(
+      text: widget.evento?.nombre ?? '',
+    );
+    _descripcionController = TextEditingController(
+      text: widget.evento?.descripcion ?? '',
+    );
+    _lugarController = TextEditingController(text: widget.evento?.lugar ?? '');
+    _imagenController = TextEditingController(
+      text: widget.evento?.imagenPath ?? '',
+    );
+
+    _fechaInicio = widget.evento?.fechaInicio;
+    _fechaFin = widget.evento?.fechaFin;
+
+    _categoriaSeleccionada = widget.evento?.categoria;
+    if (_categoriaSeleccionada == null ||
+        !_categorias.contains(_categoriaSeleccionada)) {
+      _categoriaSeleccionada = 'Otros'; // Valor por defecto
+    }
+
+    _estadoSeleccionado = widget.evento?.estado;
+    if (_estadoSeleccionado == null ||
+        !_estados.contains(_estadoSeleccionado)) {
+      _estadoSeleccionado = 'Pendiente'; // Valor por defecto
+    }
+    // ... inicializar otros controladores con widget.evento ...
+  }
+
+  Future<void> _seleccionarFecha({required bool esFechaInicio}) async {
     final DateTime? fechaSeleccionada = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -44,14 +85,23 @@ class _EventFormState extends State<EventFormView> {
           _fechaInicio = fechaSeleccionada;
           if (_fechaFin != null && _fechaFin!.isBefore(_fechaInicio!)) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
+              const SnackBar(
+                content: Text(
+                  'La fecha fin no puede ser anterior a la fecha inicio',
+                ),
+              ),
             );
             _fechaFin = null;
           }
         } else {
-          if (_fechaInicio != null && fechaSeleccionada.isBefore(_fechaInicio!)) {
+          if (_fechaInicio != null &&
+              fechaSeleccionada.isBefore(_fechaInicio!)) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('La fecha fin no puede ser anterior a la fecha inicio')),
+              const SnackBar(
+                content: Text(
+                  'La fecha fin no puede ser anterior a la fecha inicio',
+                ),
+              ),
             );
           } else {
             _fechaFin = fechaSeleccionada;
@@ -84,8 +134,9 @@ class _EventFormState extends State<EventFormView> {
 
   @override
   Widget build(BuildContext context) {
+    final bool esEdicion = widget.evento != null;
     return Scaffold(
-      appBar: AppBar(title: const Text('Crear Evento')),
+      appBar: AppBar(title: Text(esEdicion ? "Editar Evento" : 'Crear Evento')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -112,7 +163,10 @@ class _EventFormState extends State<EventFormView> {
               TextFormField(
                 readOnly: true,
                 controller: TextEditingController(
-                  text: _fechaInicio != null ? DateFormat('yyyy-MM-dd').format(_fechaInicio!) : '',
+                  text:
+                      _fechaInicio != null
+                          ? DateFormat('yyyy-MM-dd').format(_fechaInicio!)
+                          : '',
                 ),
                 decoration: InputDecoration(
                   labelText: 'Fecha inicio',
@@ -127,7 +181,10 @@ class _EventFormState extends State<EventFormView> {
               TextFormField(
                 readOnly: true,
                 controller: TextEditingController(
-                  text: _fechaFin != null ? DateFormat('yyyy-MM-dd').format(_fechaFin!) : '',
+                  text:
+                      _fechaFin != null
+                          ? DateFormat('yyyy-MM-dd').format(_fechaFin!)
+                          : '',
                 ),
                 decoration: InputDecoration(
                   labelText: 'Fecha fin',
@@ -153,12 +210,13 @@ class _EventFormState extends State<EventFormView> {
                   border: OutlineInputBorder(),
                 ),
                 value: _categoriaSeleccionada,
-                items: _categorias
-                    .map((cat) => DropdownMenuItem(
-                          value: cat,
-                          child: Text(cat),
-                        ))
-                    .toList(),
+                items:
+                    _categorias
+                        .map(
+                          (cat) =>
+                              DropdownMenuItem(value: cat, child: Text(cat)),
+                        )
+                        .toList(),
                 onChanged: (valor) {
                   setState(() {
                     _categoriaSeleccionada = valor;
@@ -172,12 +230,13 @@ class _EventFormState extends State<EventFormView> {
                   border: OutlineInputBorder(),
                 ),
                 value: _estadoSeleccionado,
-                items: _estados
-                    .map((est) => DropdownMenuItem(
-                          value: est,
-                          child: Text(est),
-                        ))
-                    .toList(),
+                items:
+                    _estados
+                        .map(
+                          (est) =>
+                              DropdownMenuItem(value: est, child: Text(est)),
+                        )
+                        .toList(),
                 onChanged: (valor) {
                   setState(() {
                     _estadoSeleccionado = valor;
@@ -200,56 +259,96 @@ class _EventFormState extends State<EventFormView> {
               if (_imagenSeleccionada != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Image.file(
-                    _imagenSeleccionada!,
-                    height: 150,
-                  ),
+                  child: Image.file(_imagenSeleccionada!, height: 150),
                 ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    if (_fechaInicio == null || _fechaFin == null || _categoriaSeleccionada == null || _estadoSeleccionado == null) {
+                    if (_fechaInicio == null ||
+                        _fechaFin == null ||
+                        _categoriaSeleccionada == null ||
+                        _estadoSeleccionado == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Por favor completa todos los campos')),
+                        const SnackBar(
+                          content: Text('Por favor completa todos los campos'),
+                        ),
                       );
                       return;
                     }
 
-                    final imagenPath = _imagenController.text.isNotEmpty
-                        ? 'assets/${_imagenController.text}'
-                        : 'assets/default.png';
+                    final imagenPath =
+                        _imagenController.text.isNotEmpty
+                            ? 'assets/${_imagenController.text}'
+                            : 'assets/default.png';
+                    if (esEdicion) {
+                      try {
+                        await EventoController().actualizarEvento(
+                          _nombreController.text,
+                          _descripcionController.text,
+                          _fechaInicio!,
+                          _fechaFin!,
+                          _categoriaSeleccionada!,
+                          _lugarController.text,
+                          _estadoSeleccionado!.toLowerCase(),
+                          imagenPath,
+                          _eventId!,
+                        );
+                        Navigator.pop(context, true);
 
-                    try {
-                      final nuevoEvento = await EventoController().crearEvento(
-                        _nombreController.text,
-                        _descripcionController.text,
-                        _fechaInicio!,
-                        _fechaFin!,
-                        _categoriaSeleccionada!,
-                        _lugarController.text,
-                        _estadoSeleccionado!.toLowerCase(),
-                        imagenPath,
-                      );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Evento editado exitosamente'),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error al editar el evento: $e'),
+                          ),
+                        );
+                      }
+                    } else {
+                      try {
+                        await EventoController().crearEvento(
+                          _nombreController.text,
+                          _descripcionController.text,
+                          _fechaInicio!,
+                          _fechaFin!,
+                          _categoriaSeleccionada!,
+                          _lugarController.text,
+                          _estadoSeleccionado!.toLowerCase(),
+                          imagenPath,
+                        );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Evento creado exitosamente')),
-                      );
-                      Navigator.pop(context);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error al crear el evento: $e')),
-                      );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Evento creado exitosamente'),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error al crear el evento: $e'),
+                          ),
+                        );
+                      }
                     }
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 226, 226, 226),
                 ),
-               child: const Text(
-                'Guardar Evento',
-                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 16),
-              ),
+                child: Text(
+                  esEdicion ? 'Editar Evento' : 'Crear Evento',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           ),
