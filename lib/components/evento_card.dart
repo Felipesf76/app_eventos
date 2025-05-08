@@ -9,6 +9,13 @@ class EventoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool finalizado = evento.estado.toLowerCase() == 'finalizado';
+    final Map<String, String> _categorias = {
+      'festival': 'Festival',
+      'teatro': 'Obra de teatro',
+      'conciertos': 'Concierto',
+      'eventos_capital': 'Eventos Públicos',
+      'default': 'Otros',
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +26,7 @@ class EventoCard extends StatelessWidget {
           height: 200,
           color: Colors.grey[300],
           child: Image.asset(
-            evento.imagenPath,
+            'assets/${evento.categoria}.jpg',
             fit: BoxFit.cover,
             errorBuilder:
                 (context, error, stackTrace) =>
@@ -43,7 +50,7 @@ class EventoCard extends StatelessWidget {
           evento.fechaFin.toLocal().toString().split(' ')[0],
         ),
         _info("📍 Lugar", evento.lugar),
-        _info("🏷️ Categoría", evento.categoria),
+        _info("🏷️ Categoría", _categorias[evento.categoria]!),
         const SizedBox(height: 20),
         if (finalizado) _estadoFinalizado() else const SizedBox(),
       ],

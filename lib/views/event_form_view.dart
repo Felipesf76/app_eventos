@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as path;
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../controllers/evento_controller.dart';
 import '../models/evento.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EventFormView extends StatefulWidget {
   final Evento? evento;
@@ -31,12 +33,13 @@ class _EventFormState extends State<EventFormView> {
 
   File? _imagenSeleccionada;
 
-  final List<String> _categorias = [
-    'Festival',
-    'Obra de teatro',
-    'Concierto',
-    'Otros',
-  ];
+  final Map<String, String> _categorias = {
+    'festival': 'Festival',
+    'teatro': 'Obra de teatro',
+    'conciertos': 'Concierto',
+    'eventos_capital': 'Eventos Públicos',
+    'default': 'Otros',
+  };
   final List<String> _estados = ['Pendiente', 'En curso', 'Finalizado'];
 
   @override
@@ -59,8 +62,8 @@ class _EventFormState extends State<EventFormView> {
 
     _categoriaSeleccionada = widget.evento?.categoria;
     if (_categoriaSeleccionada == null ||
-        !_categorias.contains(_categoriaSeleccionada)) {
-      _categoriaSeleccionada = 'Otros'; // Valor por defecto
+        !_categorias.containsKey(_categoriaSeleccionada)) {
+      _categoriaSeleccionada = 'default'; // Valor por defecto
     }
 
     _estadoSeleccionado = widget.evento?.estado;
@@ -116,9 +119,14 @@ class _EventFormState extends State<EventFormView> {
     final XFile? imagen = await picker.pickImage(source: ImageSource.gallery);
 
     if (imagen != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final String nombreArchivo = path.basename(imagen.path);
+      final File nuevaImagen = await File(
+        imagen.path,
+      ).copy('${directory.path}/$nombreArchivo');
       setState(() {
-        _imagenController.text = imagen.name;
-        _imagenSeleccionada = File(imagen.path);
+        _imagenSeleccionada = nuevaImagen;
+        _imagenController.text = nombreArchivo;
       });
     }
   }
@@ -211,10 +219,12 @@ class _EventFormState extends State<EventFormView> {
                 ),
                 value: _categoriaSeleccionada,
                 items:
-                    _categorias
+                    _categorias.keys
                         .map(
-                          (cat) =>
-                              DropdownMenuItem(value: cat, child: Text(cat)),
+                          (cat) => DropdownMenuItem(
+                            value: cat,
+                            child: Text(_categorias[cat]!),
+                          ),
                         )
                         .toList(),
                 onChanged: (valor) {
@@ -243,24 +253,7 @@ class _EventFormState extends State<EventFormView> {
                   });
                 },
               ),
-              const SizedBox(height: 12),
-              GestureDetector(
-                onTap: _elegirImagen,
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _imagenController,
-                    decoration: const InputDecoration(
-                      labelText: 'Imagen',
-                      prefixIcon: Icon(Icons.image),
-                    ),
-                  ),
-                ),
-              ),
-              if (_imagenSeleccionada != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Image.file(_imagenSeleccionada!, height: 150),
-                ),
+              //
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
@@ -279,7 +272,7 @@ class _EventFormState extends State<EventFormView> {
 
                     final imagenPath =
                         _imagenController.text.isNotEmpty
-                            ? 'assets/${_imagenController.text}'
+                            ? 'assets/$_imagenController'
                             : 'assets/default.png';
                     if (esEdicion) {
                       try {

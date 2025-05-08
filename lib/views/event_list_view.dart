@@ -129,15 +129,28 @@ class _EventListViewState extends State<EventListView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Imagen del evento
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          evento.imagenPath,
-                          width: 200.0,
-                          height: 100.0,
+                      Container(
+                        width: double.infinity,
+                        height: 70,
+                        color: Colors.grey[300],
+                        child: Image.asset(
+                          'assets/${evento.categoria}.jpg',
                           fit: BoxFit.cover,
+                          errorBuilder:
+                              (context, error, stackTrace) => const Center(
+                                child: Icon(Icons.image, size: 50),
+                              ),
                         ),
                       ),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(8),
+                      //   child: Image.network(
+                      //     '/assets/${evento.}.jpg',
+                      //     width: 200.0,
+                      //     height: 100.0,
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                       const SizedBox(height: 8),
                       // Título del evento
                       Text(
