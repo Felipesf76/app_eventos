@@ -5,20 +5,14 @@ import 'package:http/http.dart' as http;
 const String baseUrl = 'http://147.93.114.243:3030';
 
 class EventoController {
+  
   Future<List<Evento>> obtenerEventos() async {
     final url = Uri.parse('$baseUrl/eventos');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // Imprimir los bytes de la respuesta
-      print('Response Bytes: ${response.bodyBytes}');
-
       // Decodificar en UTF-8
       final decodedResponse = utf8.decode(response.bodyBytes);
-
-      // Imprimir la respuesta decodificada para verificar los caracteres
-      print('Decoded Response: $decodedResponse');
-
       final List<dynamic> decodedData = json.decode(decodedResponse);
       return decodedData.map((json) => Evento.fromJSON(json)).toList();
     } else {
@@ -30,7 +24,9 @@ class EventoController {
     final url = Uri.parse('$baseUrl/eventos/$id');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      return Evento.fromJSON(json.decode(response.body));
+      final decodedResponse = utf8.decode(response.bodyBytes);
+      final decodedData = json.decode(decodedResponse);
+      return Evento.fromJSON(decodedData);
     } else {
       throw Exception(('Fallo al cargar el evento'));
     }
@@ -100,14 +96,16 @@ class EventoController {
       body: json.encode(request),
     );
     if (response.statusCode == 200) {
-      return Evento.fromJSON(json.decode(response.body));
+      final decodedResponse = utf8.decode(response.bodyBytes);
+      final decodedData = json.decode(decodedResponse);
+      return Evento.fromJSON(decodedData);
     } else {
       throw Exception('Fallo al actualizar el evento ${response.statusCode}');
     }
   }
 
   Future<Evento?>? eliminarEvento(String id) async {
-    final url = Uri.parse('$baseUrl/eventos/1');
+    final url = Uri.parse('$baseUrl/eventos/$id');
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       return null;

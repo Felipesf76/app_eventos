@@ -26,9 +26,7 @@ class EventDetailsView extends StatelessWidget {
               );
               if (resultado == true) {
                 // Recargar la página con los nuevos datos
-                final eventoActualizado = await controller.obtenerEvento(
-                  evento.id,
-                );
+                final eventoActualizado = await controller.obtenerEvento(evento.id);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

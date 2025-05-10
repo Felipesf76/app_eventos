@@ -39,8 +39,8 @@ class EventoCard extends StatelessWidget {
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        Text(evento.descripcion, style: const TextStyle(fontSize: 16)),
-        const SizedBox(height: 12),
+        Text(evento.descripcion, style: const TextStyle(fontSize: 16), textAlign: TextAlign.justify),
+        const SizedBox(height: 25),
         _info(
           "📅 Fecha de inicio",
           evento.fechaInicio.toLocal().toString().split(' ')[0],

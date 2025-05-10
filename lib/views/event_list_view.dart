@@ -1,8 +1,6 @@
 import 'package:app_eventos/controllers/evento_controller.dart';
+import 'package:app_eventos/views/event_details_view.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import '../models/evento.dart';
 
 class EventListView extends StatefulWidget {
@@ -22,6 +20,39 @@ class _EventListViewState extends State<EventListView> {
     super.initState();
     futureEventos =
         controller.obtenerEventos(); // Llama al método del controlador
+  }
+
+    Future<void> _eliminarEvento(Evento evento) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('¿Eliminar?'),
+        content: const Text('¿Deseas eliminar este evento?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sí'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmar == true) {
+      await controller.eliminarEvento(evento.id);
+      setState(() {
+        futureEventos = controller.obtenerEventos();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Evento eliminado exitosamente'),
+        ),
+      );
+    }
   }
 
   @override
@@ -105,12 +136,19 @@ class _EventListViewState extends State<EventListView> {
               // Mostrar las tarjetas de eventos
               final evento = eventos[index - 1];
               return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  final resultado = await Navigator.push(
                     context,
-                    '/event_details_view',
-                    arguments: evento, // Pasamos el objeto Evento
+                    MaterialPageRoute(
+                      builder: (context) => EventDetailsView(evento: evento),
+                    ),
                   );
+
+                  if (resultado == true) {
+                    setState(() {
+                      futureEventos = controller.obtenerEventos();
+                    });
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(12.0),
@@ -125,7 +163,9 @@ class _EventListViewState extends State<EventListView> {
                       ),
                     ],
                   ),
-                  child: Column(
+                  child: Stack(
+                    children: [
+                      Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Imagen del evento
@@ -133,6 +173,7 @@ class _EventListViewState extends State<EventListView> {
                         width: double.infinity,
                         height: 70,
                         color: Colors.grey[300],
+                        
                         child: Image.asset(
                           'assets/${evento.categoria}.jpg',
                           fit: BoxFit.cover,
@@ -162,12 +203,25 @@ class _EventListViewState extends State<EventListView> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                      // Descripción corta del evento (limitada a 2 líneas)
+                      
                       Text(
                         evento.descripcion,
                         style: const TextStyle(fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
+                        ),
+                        const SizedBox(height: 32),
+                        ],
+                      ),
+                      // Ícono de eliminar
+                      Positioned(
+                        bottom: 2,
+                        right: 2,
+                        child: IconButton(
+                          iconSize: 20,
+                          icon: const Icon(Icons.delete, color: Colors.blueGrey),
+                          onPressed: () => _eliminarEvento(evento),
+                        ),
                       ),
                     ],
                   ),

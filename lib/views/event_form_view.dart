@@ -287,14 +287,15 @@ class _EventFormState extends State<EventFormView> {
                           imagenPath,
                           _eventId!,
                         );
-                        Navigator.pop(context, true);
+                        
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Evento editado exitosamente'),
                           ),
                         );
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
+                        
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -320,7 +321,7 @@ class _EventFormState extends State<EventFormView> {
                             content: Text('Evento creado exitosamente'),
                           ),
                         );
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
