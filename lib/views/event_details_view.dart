@@ -4,39 +4,46 @@ import '../models/evento.dart';
 import '../components/evento_card.dart';
 import './event_form_view.dart';
 
-class EventDetailsView extends StatelessWidget {
-  final Evento evento;
-  final EventoController controller = EventoController();
+class EventDetailsView extends StatefulWidget {
+  final Evento? evento;
+  const EventDetailsView({super.key, this.evento});
 
-  EventDetailsView({super.key, required this.evento});
+  @override
+  State<EventDetailsView> createState() => _EventDetailsState();
+}
+
+class _EventDetailsState extends State<EventDetailsView> {
+  Evento? _evento;
+  final EventoController controller = EventoController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(evento.nombre),
+        title: Text(widget.evento?.nombre ?? ''),
         actions: [
           TextButton(
             onPressed: () async {
               final resultado = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EventFormView(evento: evento),
+                  builder: (context) => EventFormView(evento: widget.evento),
                 ),
               );
               if (resultado == true) {
                 // Recargar la página con los nuevos datos
-                final eventoActualizado = await controller.obtenerEvento(
-                  evento.id,
-                );
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) =>
-                            EventDetailsView(evento: eventoActualizado),
-                  ),
-                );
+                Navigator.pop(context, true);
+                // final eventoActualizado = await controller.obtenerEvento(
+                //   widget.evento?.id ?? '',
+                // );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder:
+                //         (context) =>
+                //             EventDetailsView(evento: eventoActualizado),
+                //   ),
+                // );
               }
             },
             child: const Text(
@@ -48,10 +55,10 @@ class EventDetailsView extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: EventoCard(evento: evento),
+        child: EventoCard(evento: widget.evento!),
       ),
       bottomNavigationBar:
-          evento.estado.toLowerCase() == 'finalizado'
+          widget.evento?.estado.toLowerCase() == 'finalizado'
               ? null
               : Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -61,7 +68,7 @@ class EventDetailsView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: () async {
-                    await controller.estadoFinalizado(evento.id);
+                    await controller.estadoFinalizado(widget.evento?.id ?? '');
                     Navigator.pop(context, true);
                   },
                   child: const Text(
