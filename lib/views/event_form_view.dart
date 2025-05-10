@@ -31,8 +31,6 @@ class _EventFormState extends State<EventFormView> {
   String? _estadoSeleccionado;
   String? _eventId;
 
-  File? _imagenSeleccionada;
-
   final Map<String, String> _categorias = {
     'festival': 'Festival',
     'teatro': 'Obra de teatro',
@@ -40,7 +38,7 @@ class _EventFormState extends State<EventFormView> {
     'eventos_capital': 'Eventos Públicos',
     'default': 'Otros',
   };
-  final List<String> _estados = ['Pendiente', 'En curso', 'Finalizado'];
+  final List<String> _estados = ['Pendiente', 'En curso', 'finalizado'];
 
   @override
   void initState() {
@@ -110,23 +108,6 @@ class _EventFormState extends State<EventFormView> {
             _fechaFin = fechaSeleccionada;
           }
         }
-      });
-    }
-  }
-
-  Future<void> _elegirImagen() async {
-    final picker = ImagePicker();
-    final XFile? imagen = await picker.pickImage(source: ImageSource.gallery);
-
-    if (imagen != null) {
-      final directory = await getApplicationDocumentsDirectory();
-      final String nombreArchivo = path.basename(imagen.path);
-      final File nuevaImagen = await File(
-        imagen.path,
-      ).copy('${directory.path}/$nombreArchivo');
-      setState(() {
-        _imagenSeleccionada = nuevaImagen;
-        _imagenController.text = nombreArchivo;
       });
     }
   }
@@ -287,7 +268,6 @@ class _EventFormState extends State<EventFormView> {
                           imagenPath,
                           _eventId!,
                         );
-                        
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -295,7 +275,6 @@ class _EventFormState extends State<EventFormView> {
                           ),
                         );
                         Navigator.pop(context, true);
-                        
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
