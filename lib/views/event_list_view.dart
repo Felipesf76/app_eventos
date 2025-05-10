@@ -89,7 +89,7 @@ class _EventListViewState extends State<EventListView> {
               crossAxisSpacing: 20.0, // Espacio horizontal entre las tarjetas
               mainAxisSpacing: 20.0, // Espacio vertical entre las tarjetas
               childAspectRatio:
-                  0.85, // Relación de aspecto cuadrada para las tarjetas
+                  0.70, // Relación de aspecto cuadrada para las tarjetas
             ),
             itemCount:
                 eventos.length +
@@ -221,19 +221,44 @@ class _EventListViewState extends State<EventListView> {
                           const SizedBox(height: 32),
                         ],
                       ),
-                      // Ícono de eliminar
+                      // Posiciona etiqueta y botón de eliminar juntos
                       Positioned(
                         bottom: 2,
                         right: 2,
-                        child: IconButton(
-                          iconSize: 20,
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.blueGrey,
-                          ),
-                          onPressed: () => _eliminarEvento(evento),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Estado
+                            if (evento.estado.isNotEmpty)
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                margin: const EdgeInsets.only(right: 4), // espacio entre etiqueta e ícono
+                                decoration: BoxDecoration(
+                                  color: evento.estado == "finalizado" ? Colors.redAccent : Colors.blueAccent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  evento.estado,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            // Ícono de eliminar
+                            IconButton(
+                              iconSize: 20,
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.blueGrey,
+                              ),
+                              onPressed: () => _eliminarEvento(evento),
+                            ),
+                          ],
                         ),
                       ),
+
                     ],
                   ),
                 ),
