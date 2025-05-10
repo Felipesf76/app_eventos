@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 const String baseUrl = 'http://147.93.114.243:3030';
 
 class EventoController {
-  
   Future<List<Evento>> obtenerEventos() async {
     final url = Uri.parse('$baseUrl/eventos');
     final response = await http.get(url);
@@ -144,13 +143,5 @@ class EventoController {
     } else {
       throw Exception('Error al actualizar el estado del evento');
     }
-  }
-
-  void editarEvento() {
-    print('Editando Evento');
-  }
-
-  void finalizarEvento() {
-    print('Finalizando evento');
   }
 }

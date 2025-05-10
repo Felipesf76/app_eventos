@@ -26,7 +26,9 @@ class EventDetailsView extends StatelessWidget {
               );
               if (resultado == true) {
                 // Recargar la página con los nuevos datos
-                final eventoActualizado = await controller.obtenerEvento(evento.id);
+                final eventoActualizado = await controller.obtenerEvento(
+                  evento.id,
+                );
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -60,6 +62,7 @@ class EventDetailsView extends StatelessWidget {
                   ),
                   onPressed: () async {
                     await controller.estadoFinalizado(evento.id);
+                    Navigator.pop(context, true);
                   },
                   child: const Text(
                     'FINALIZAR EVENTO',
